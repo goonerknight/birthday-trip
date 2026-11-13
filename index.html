@@ -785,16 +785,16 @@ body {
 
     <div class="phase" id="phase-1">
       <div class="phase-dot"></div>
-      <div class="phase-time">SO 07:00</div>
-      <div class="phase-name">🚗 Odjezd</div>
+      <div class="phase-time">SOBOTA RÁNO</div>
+      <div class="phase-name">🚗 Odjezd z Prahy</div>
       <div class="phase-card">
-        <p>Ranní vyzvednutí. Kafe v ruce, tašky v kufru. Vyrážíme z Prahy. Kam? To se dozvíš brzy... 😏</p>
+        <p>Brzy ráno nasedáme a vyrážíme. Kafe s sebou, tašky v kufru. Kam? To se dozvíš cestou... 😏</p>
       </div>
     </div>
 
     <div class="phase locked" id="phase-2">
       <div class="phase-dot"></div>
-      <div class="phase-time">SO 09:00 – 13:00</div>
+      <div class="phase-time">SOBOTA PŘES DEN</div>
       <div class="phase-name" id="phase-2-name">🏔️ ???</div>
       <div class="phase-card" id="phase-2-card">
         <div class="locked-label">🔒 Odemkne se v sobotu ráno</div>
@@ -803,28 +803,19 @@ body {
 
     <div class="phase locked" id="phase-3">
       <div class="phase-dot"></div>
-      <div class="phase-time">SO 15:30</div>
+      <div class="phase-time">SOBOTA VEČER</div>
       <div class="phase-name" id="phase-3-name">🎉 ???</div>
       <div class="phase-card" id="phase-3-card">
-        <div class="locked-label">🔒 Odemkne se po túře</div>
+        <div class="locked-label">🔒 Odemkne se po denním programu</div>
       </div>
     </div>
 
-    <div class="phase locked" id="phase-4">
+    <div class="phase" id="phase-4">
       <div class="phase-dot"></div>
-      <div class="phase-time">SO VEČER</div>
-      <div class="phase-name" id="phase-4-name">🌙 ???</div>
-      <div class="phase-card" id="phase-4-card">
-        <div class="locked-label">🔒 Odemkne se v sobotu večer</div>
-      </div>
-    </div>
-
-    <div class="phase" id="phase-5">
-      <div class="phase-dot"></div>
-      <div class="phase-time">NE ~13:00</div>
+      <div class="phase-time">NEDĚLE</div>
       <div class="phase-name">🏠 Návrat domů</div>
       <div class="phase-card">
-        <p>Pohodové ráno, brunch, a pak zpátky do Prahy (~3,5h cesta). Doma kolem 17:00. Co víkend. 🙌</p>
+        <p>Pohodové ráno, brunch, a pak zpátky do Prahy. Doma po obědě. Co víkend. 🙌</p>
       </div>
     </div>
   </div>
@@ -848,7 +839,6 @@ body {
           <li>Tvůj nejlepší outfit na ven</li>
           <li>Čistý boty</li>
           <li>Parfém (víš proč 😏)</li>
-          <li>Občanka / pas (!)</li>
           <li>Dobrá nálada</li>
         </ul>
       </div>
@@ -870,8 +860,7 @@ body {
       <div class="big-emoji">⚡</div>
       <h3>Důležité info</h3>
       <p>
-        Buď ready v sobotu v <strong>7:00 ráno</strong>. Nepřijď pozdě a nebud moc zkacovanej 😅.
-        Jedeme přes hranice, takže <strong>vezmi si občanku/pas</strong>.
+        Buď ready v sobotu ráno. V pátek žádný pařby, znáš se 😅.
         O zbytek je postaráno. Věř procesu. 🤝
       </p>
     </div>
@@ -1094,19 +1083,16 @@ function goToMain(tripDate) {
   departure.setHours(7, 0, 0, 0);
 
   const phase2Unlock = new Date(tripDate);
-  phase2Unlock.setHours(6, 0, 0, 0);
+  phase2Unlock.setHours(8, 0, 0, 0);
 
   const phase3Unlock = new Date(tripDate);
-  phase3Unlock.setHours(13, 0, 0, 0);
-
-  const phase4Unlock = new Date(tripDate);
-  phase4Unlock.setHours(18, 0, 0, 0);
+  phase3Unlock.setHours(15, 0, 0, 0);
 
   const galleryUnlock = new Date(sun);
   galleryUnlock.setHours(18, 0, 0, 0);
 
   startCountdown(departure);
-  updatePhases(phase2Unlock, phase3Unlock, phase4Unlock, galleryUnlock);
+  updatePhases(phase2Unlock, phase3Unlock, galleryUnlock);
 }
 
 // ===== COUNTDOWN =====
@@ -1135,7 +1121,7 @@ function startCountdown(departure) {
 }
 
 // ===== PHASE UNLOCKING =====
-function updatePhases(phase2Unlock, phase3Unlock, phase4Unlock, galleryUnlock) {
+function updatePhases(phase2Unlock, phase3Unlock, galleryUnlock) {
   const now = new Date();
 
   if (now >= phase2Unlock) {
@@ -1144,9 +1130,8 @@ function updatePhases(phase2Unlock, phase3Unlock, phase4Unlock, galleryUnlock) {
     document.getElementById('phase-2-card').innerHTML = `
       <div class="emoji-icon">⛰️</div>
       <p>
-        <strong>Krkonoše!</strong> Jdeme na hory — nejvyšší pohoří v Česku.
-        Čerstvej vzduch, epický výhledy, možná i sníh nahoře. Cca 4 hodiny túra.
-        Tady si tu večerní párty zasloužíme. 💪
+        <strong>Krkonoše, kámo!</strong> Jdeme na hory — nejvyšší pohoří v Česku.
+        Čerstvej vzduch, epický výhledy. Tady si tu večerní párty zasloužíme. 💪
       </p>
     `;
   }
@@ -1157,21 +1142,9 @@ function updatePhases(phase2Unlock, phase3Unlock, phase4Unlock, galleryUnlock) {
     document.getElementById('phase-3-card').innerHTML = `
       <div class="emoji-icon">🇵🇱</div>
       <p>
-        <strong>Jedeme přes hranice!</strong> Po túře frčíme rovnou do <strong>Wrocławi</strong> (~2h cesta).
-        Check-in, osvěžit se a připravit. Tohle město umí pařit. 🔥
-      </p>
-    `;
-  }
-
-  if (now >= phase4Unlock) {
-    document.getElementById('phase-4').classList.remove('locked');
-    document.getElementById('phase-4-name').textContent = '🌙 Noční Wrocław';
-    document.getElementById('phase-4-card').innerHTML = `
-      <div class="emoji-icon">🍾</div>
-      <p>
-        Bary, kluby a nejlepší noční život co Wrocław nabízí.
-        Oslavenec platí první rundu. 🥂
-        Krásný město, krásný lidi, jedna legendární noc. Jedeme na to.
+        <strong>Jedeme přes hranice!</strong> Po túře frčíme do <strong>Wrocławi</strong>.
+        Osvěžit se, připravit a vyrazit. Tohle město umí pařit. 🔥
+        Krásný město, krásný lidi, jedna legendární noc. 🍾
       </p>
     `;
   }
@@ -1179,9 +1152,8 @@ function updatePhases(phase2Unlock, phase3Unlock, phase4Unlock, galleryUnlock) {
   const phases = [
     { el: document.getElementById('phase-1'), start: null, end: phase2Unlock },
     { el: document.getElementById('phase-2'), start: phase2Unlock, end: phase3Unlock },
-    { el: document.getElementById('phase-3'), start: phase3Unlock, end: phase4Unlock },
-    { el: document.getElementById('phase-4'), start: phase4Unlock, end: galleryUnlock },
-    { el: document.getElementById('phase-5'), start: galleryUnlock, end: null },
+    { el: document.getElementById('phase-3'), start: phase3Unlock, end: galleryUnlock },
+    { el: document.getElementById('phase-4'), start: galleryUnlock, end: null },
   ];
   phases.forEach(p => {
     if (p.start && now < p.start) return;
@@ -1213,7 +1185,7 @@ function updatePhases(phase2Unlock, phase3Unlock, phase4Unlock, galleryUnlock) {
     `;
   }
 
-  setTimeout(() => updatePhases(phase2Unlock, phase3Unlock, phase4Unlock, galleryUnlock), 60000);
+  setTimeout(() => updatePhases(phase2Unlock, phase3Unlock, galleryUnlock), 60000);
 }
 
 // ===== LIGHTBOX =====
