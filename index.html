@@ -928,8 +928,8 @@ function getSunday(satDate) {
 
 function getSpring2027Saturdays() {
   const saturdays = [];
-  const start = new Date(2027, 2, 1); // March 1, 2027
-  const end = new Date(2027, 4, 31);  // May 31, 2027
+  const start = new Date(2027, 3, 17); // April 17, 2027
+  const end = new Date(2027, 5, 30);  // June 30, 2027
   const d = new Date(start);
   while (d <= end) {
     if (d.getDay() === 6) {
@@ -1220,6 +1220,13 @@ document.getElementById('lightbox').addEventListener('click', () => {
 });
 
 window.openLightbox = openLightbox;
+
+// Secret reset: add ?reset to the URL to clear saved state
+if (window.location.search.includes('reset')) {
+  localStorage.removeItem('bday-unlocked');
+  localStorage.removeItem('bday-trip-date');
+  window.location.href = window.location.pathname;
+}
 </script>
 </body>
 </html>
