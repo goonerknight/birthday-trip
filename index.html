@@ -213,6 +213,7 @@ body {
   padding: 2rem;
   text-align: center;
   overflow-y: auto;
+  width: 100%;
 }
 
 .date-intro {
@@ -257,8 +258,12 @@ body {
 
 .date-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.6rem;
+}
+
+@media (min-width: 600px) {
+  .date-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
 .date-btn {
