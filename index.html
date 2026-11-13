@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🎂 Birthday Mission</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a25;
+  --border: #2a2a3a;
+  --text: #e8e8f0;
+  --text-dim: #8888aa;
+  --accent: #6c5ce7;
+  --accent2: #00cec9;
+  --gold: #fdcb6e;
+  --red: #ff6b6b;
+  --green: #00b894;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== PARTICLES ===== */
+#particles {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: float linear infinite;
+  opacity: 0;
+}
+
+@keyframes float {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+}
+
+/* ===== SCREENS ===== */
+.screen {
+  display: none;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+.screen.active { display: flex; flex-direction: column; }
+
+/* ===== PASSWORD SCREEN ===== */
+#password-screen {
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.lock-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.title {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+.password-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 360px;
+}
+
+.password-input {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.2rem;
+  text-align: center;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.password-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(108, 92, 231, 0.3);
+}
+
+.password-input.shake {
+  animation: shake 0.5s ease-in-out;
+  border-color: var(--red);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+}
+
+.hint-text {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+.error-msg {
+  color: var(--red);
+  font-size: 0.9rem;
+  min-height: 1.5em;
+}
+
+/* ===== REVEAL ANIMATION ===== */
+#reveal-screen {
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.reveal-text {
+  font-size: clamp(2rem, 8vw, 5rem);
+  font-weight: 700;
+  opacity: 0;
+  transform: scale(0.5);
+  animation: revealBoom 1s ease-out forwards;
+}
+
+@keyframes revealBoom {
+  0% { opacity: 0; transform: scale(0.5) rotate(-5deg); }
+  60% { opacity: 1; transform: scale(1.1) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.reveal-sub {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  color: var(--text-dim);
+  margin-top: 1rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease-out 0.8s forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== MAIN CONTENT ===== */
+#main-screen { padding: 0; }
+
+.hero {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: radial-gradient(ellipse at top, rgba(108, 92, 231, 0.15) 0%, transparent 70%);
+  position: relative;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+  background: rgba(108, 92, 231, 0.15);
+  border: 1px solid rgba(108, 92, 231, 0.3);
+  border-radius: 100px;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.hero-title {
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.hero-title .gradient {
+  background: linear-gradient(135deg, var(--gold), #e17055, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-date {
+  font-size: 1.2rem;
+  color: var(--text-dim);
+  margin-bottom: 2rem;
+}
+
+.countdown-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.countdown-unit {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  min-width: 80px;
+  text-align: center;
+}
+
+.countdown-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent2);
+}
+
+.countdown-label {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.25rem;
+}
+
+/* ===== TIMELINE ===== */
+.timeline {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.timeline-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.phase {
+  position: relative;
+  padding-left: 3rem;
+  padding-bottom: 2.5rem;
+  border-left: 2px solid var(--border);
+  margin-left: 0.75rem;
+  opacity: 0;
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.phase:last-child { border-left-color: transparent; padding-bottom: 0; }
+
+.phase:nth-child(2) { animation-delay: 0.1s; }
+.phase:nth-child(3) { animation-delay: 0.2s; }
+.phase:nth-child(4) { animation-delay: 0.3s; }
+.phase:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.phase-dot {
+  position: absolute;
+  left: -11px;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 3px solid var(--accent);
+  z-index: 2;
+}
+
+.phase.locked .phase-dot {
+  border-color: var(--border);
+  background: var(--bg);
+}
+
+.phase.active .phase-dot {
+  border-color: var(--green);
+  background: var(--green);
+  box-shadow: 0 0 12px rgba(0, 184, 148, 0.5);
+}
+
+.phase-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--accent2);
+  margin-bottom: 0.3rem;
+}
+
+.phase.locked .phase-time { color: var(--text-dim); }
+
+.phase-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.phase-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.phase.locked .phase-card {
+  background: rgba(18, 18, 26, 0.5);
+  border-style: dashed;
+}
+
+.phase-card p {
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.phase-card .emoji-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.locked-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* ===== PACKING LIST ===== */
+.packing-section {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.packing-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.packing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.packing-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem;
+}
+
+.packing-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.packing-card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.packing-card li {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.packing-card li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* ===== INFO BANNER ===== */
+.info-banner {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.info-card {
+  background: linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(0, 206, 201, 0.1));
+  border: 1px solid rgba(108, 92, 231, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.info-card .big-emoji {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-card p {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ===== PHOTO GALLERY ===== */
+.gallery-section {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.gallery-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.gallery-sub {
+  text-align: center;
+  color: var(--text-dim);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+.gallery-item {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.gallery-item:hover { transform: scale(1.03); }
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 2px dashed var(--border);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.gallery-placeholder .big-emoji { font-size: 3rem; margin-bottom: 1rem; }
+.gallery-placeholder p { color: var(--text-dim); font-size: 0.95rem; }
+
+/* ===== LIGHTBOX ===== */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: pointer;
+}
+
+.lightbox.open { display: flex; }
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 90vh;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+/* ===== CONFETTI ===== */
+.confetti-piece {
+  position: fixed;
+  z-index: 999;
+  pointer-events: none;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .countdown-unit { min-width: 65px; padding: 0.75rem 1rem; }
+  .countdown-number { font-size: 1.5rem; }
+  .phase { padding-left: 2rem; }
+  .packing-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<!-- ===== PASSWORD SCREEN ===== -->
+<div id="password-screen" class="screen active">
+  <div class="lock-icon">🔒</div>
+  <h1 class="title">Mission Classified</h1>
+  <p class="subtitle">
+    Happy Birthday, legend! 🎂<br>
+    Your gift is locked behind a password.<br>
+    Complete the challenge to unlock it.
+  </p>
+  <div class="password-box">
+    <input
+      type="text"
+      class="password-input"
+      id="pwd-input"
+      placeholder="ENTER CODE"
+      autocomplete="off"
+      spellcheck="false"
+    >
+    <div class="error-msg" id="error-msg">&nbsp;</div>
+    <button class="submit-btn" id="submit-btn">UNLOCK 🔓</button>
+  </div>
+  <p class="hint-text">💡 Hint: Complete the birthday challenge to earn the code!</p>
+</div>
+
+<!-- ===== REVEAL SCREEN ===== -->
+<div id="reveal-screen" class="screen">
+  <div>
+    <div class="reveal-text">🎉 YOU'RE GOING ON A TRIP! 🎉</div>
+    <div class="reveal-sub">Pack your bags, bro. This weekend is going to be legendary.</div>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div id="main-screen" class="screen">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">🎁 Birthday Mission Briefing</div>
+    <h1 class="hero-title">
+      <span class="gradient">Weekend<br>Adventure</span>
+    </h1>
+    <p class="hero-date">Saturday Nov 14 → Sunday Nov 15, 2026</p>
+    <div class="countdown-row" id="countdown">
+      <div class="countdown-unit">
+        <div class="countdown-number" id="cd-days">--</div>
+        <div class="countdown-label">Days</div>
+      </div>
+      <div class="countdown-unit">
+        <div class="countdown-number" id="cd-hours">--</div>
+        <div class="countdown-label">Hours</div>
+      </div>
+      <div class="countdown-unit">
+        <div class="countdown-number" id="cd-mins">--</div>
+        <div class="countdown-label">Mins</div>
+      </div>
+      <div class="countdown-unit">
+        <div class="countdown-number" id="cd-secs">--</div>
+        <div class="countdown-label">Secs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline">
+    <h2 class="timeline-title">🗺️ The Plan</h2>
+
+    <!-- PHASE 1: Always visible after unlock -->
+    <div class="phase" id="phase-1">
+      <div class="phase-dot"></div>
+      <div class="phase-time">SAT 07:00</div>
+      <div class="phase-name">🚗 Departure</div>
+      <div class="phase-card">
+        <p>Early morning pickup. Coffee in hand, bags in the trunk. We're heading out of Prague. Destination? You'll find out soon enough... 😏</p>
+      </div>
+    </div>
+
+    <!-- PHASE 2: Unlocks Saturday morning -->
+    <div class="phase locked" id="phase-2">
+      <div class="phase-dot"></div>
+      <div class="phase-time">SAT 09:00 – 13:00</div>
+      <div class="phase-name" id="phase-2-name">🏔️ ???</div>
+      <div class="phase-card" id="phase-2-card">
+        <div class="locked-label">🔒 Unlocks Saturday morning</div>
+      </div>
+    </div>
+
+    <!-- PHASE 3: Unlocks Saturday afternoon -->
+    <div class="phase locked" id="phase-3">
+      <div class="phase-dot"></div>
+      <div class="phase-time">SAT 15:30</div>
+      <div class="phase-name" id="phase-3-name">🎉 ???</div>
+      <div class="phase-card" id="phase-3-card">
+        <div class="locked-label">🔒 Unlocks after the hike</div>
+      </div>
+    </div>
+
+    <!-- PHASE 4: Unlocks Saturday evening -->
+    <div class="phase locked" id="phase-4">
+      <div class="phase-dot"></div>
+      <div class="phase-time">SAT EVENING</div>
+      <div class="phase-name" id="phase-4-name">🌙 ???</div>
+      <div class="phase-card" id="phase-4-card">
+        <div class="locked-label">🔒 Unlocks Saturday evening</div>
+      </div>
+    </div>
+
+    <!-- PHASE 5: Sunday return -->
+    <div class="phase" id="phase-5">
+      <div class="phase-dot"></div>
+      <div class="phase-time">SUN ~13:00</div>
+      <div class="phase-name">🏠 Heading Home</div>
+      <div class="phase-card">
+        <p>Chill morning, grab brunch, then cruise back to Prague (~3.5h drive). ETA home around 17:00. What a weekend. 🙌</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PACKING LIST -->
+  <div class="packing-section">
+    <h2 class="packing-title">🎒 What to Pack</h2>
+    <div class="packing-grid">
+      <div class="packing-card">
+        <h3>🥾 Day Activity</h3>
+        <ul>
+          <li>Hiking boots or solid trail shoes</li>
+          <li>Comfortable layers (it'll be cold up there)</li>
+          <li>Waterproof jacket</li>
+          <li>Water bottle & snacks</li>
+          <li>Sunglasses</li>
+        </ul>
+      </div>
+      <div class="packing-card">
+        <h3>🎉 Night Activity</h3>
+        <ul>
+          <li>Your best going-out fit</li>
+          <li>Fresh kicks</li>
+          <li>Cologne (you know why 😏)</li>
+          <li>ID / passport (!)</li>
+          <li>Good vibes only</li>
+        </ul>
+      </div>
+      <div class="packing-card">
+        <h3>🧳 Essentials</h3>
+        <ul>
+          <li>Phone charger / power bank</li>
+          <li>Cash + card</li>
+          <li>Toothbrush & basics</li>
+          <li>Change of clothes for Sunday</li>
+          <li>Sunscreen (mountains are intense)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFO BANNER -->
+  <div class="info-banner">
+    <div class="info-card">
+      <div class="big-emoji">⚡</div>
+      <h3>Heads Up</h3>
+      <p>
+        Be ready Saturday at <strong>7:00 AM</strong>. Don't be late, don't be hungover (too much 😅).
+        We cross borders, so <strong>bring your ID/passport</strong>.
+        Everything else is taken care of. Trust the process. 🤝
+      </p>
+    </div>
+  </div>
+
+  <!-- PHOTO GALLERY (unlocks after trip) -->
+  <div class="gallery-section" id="gallery-section">
+    <h2 class="gallery-title">📸 Trip Memories</h2>
+    <p class="gallery-sub" id="gallery-sub">Photos from our epic weekend</p>
+    <div id="gallery-content">
+      <!-- Gallery placeholder or actual photos will be inserted here -->
+    </div>
+  </div>
+
+  <div class="footer">
+    Made with ❤️ for the birthday legend
+  </div>
+</div>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox">
+  <img id="lightbox-img" src="" alt="Photo">
+</div>
+
+<script>
+// ============================================================
+// CONFIG — EDIT THESE VALUES
+// ============================================================
+const CONFIG = {
+  // The password your friend needs to enter (case-insensitive)
+  password: "LEGENDS",
+
+  // Phase unlock times (CET / Europe/Prague timezone)
+  // Phase 2: Hike reveal
+  phase2Unlock: new Date("2026-11-14T06:00:00+01:00"),
+  // Phase 3: Party city reveal
+  phase3Unlock: new Date("2026-11-14T13:00:00+01:00"),
+  // Phase 4: Night plans reveal
+  phase4Unlock: new Date("2026-11-14T18:00:00+01:00"),
+  // Gallery: After the trip
+  galleryUnlock: new Date("2026-11-15T18:00:00+01:00"),
+
+  // Departure countdown target
+  departure: new Date("2026-11-14T07:00:00+01:00"),
+
+  // Photos — add URLs here after the trip!
+  // Example: photos: ["photo1.jpg", "photo2.jpg", "https://..."]
+  photos: []
+};
+
+// ============================================================
+// PARTICLES
+// ============================================================
+function createParticles() {
+  const container = document.getElementById('particles');
+  const colors = ['#6c5ce7', '#00cec9', '#fdcb6e', '#ff6b6b', '#55efc4'];
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.width = p.style.height = (Math.random() * 4 + 2) + 'px';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    container.appendChild(p);
+  }
+}
+createParticles();
+
+// ============================================================
+// PASSWORD LOGIC
+// ============================================================
+const pwdInput = document.getElementById('pwd-input');
+const submitBtn = document.getElementById('submit-btn');
+const errorMsg = document.getElementById('error-msg');
+
+function checkPassword() {
+  const val = pwdInput.value.trim().toUpperCase();
+  if (val === CONFIG.password.toUpperCase()) {
+    localStorage.setItem('bday-unlocked', 'true');
+    showReveal();
+  } else {
+    pwdInput.classList.add('shake');
+    errorMsg.textContent = 'Wrong code. Try again! 🤔';
+    setTimeout(() => pwdInput.classList.remove('shake'), 500);
+  }
+}
+
+submitBtn.addEventListener('click', checkPassword);
+pwdInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') checkPassword();
+  errorMsg.textContent = ' ';
+});
+
+// Check if already unlocked
+if (localStorage.getItem('bday-unlocked') === 'true') {
+  document.getElementById('password-screen').classList.remove('active');
+  document.getElementById('main-screen').classList.add('active');
+  startCountdown();
+  updatePhases();
+}
+
+// ============================================================
+// REVEAL ANIMATION
+// ============================================================
+function showReveal() {
+  document.getElementById('password-screen').classList.remove('active');
+  document.getElementById('reveal-screen').classList.add('active');
+  launchConfetti();
+
+  setTimeout(() => {
+    document.getElementById('reveal-screen').classList.remove('active');
+    document.getElementById('main-screen').classList.add('active');
+    startCountdown();
+    updatePhases();
+  }, 3500);
+}
+
+// ============================================================
+// CONFETTI
+// ============================================================
+function launchConfetti() {
+  const colors = ['#6c5ce7', '#00cec9', '#fdcb6e', '#ff6b6b', '#55efc4', '#e17055', '#fab1a0'];
+  for (let i = 0; i < 80; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.width = (Math.random() * 10 + 5) + 'px';
+    c.style.height = (Math.random() * 10 + 5) + 'px';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    c.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+    c.style.animationDelay = (Math.random() * 0.5) + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+
+// ============================================================
+// COUNTDOWN
+// ============================================================
+function startCountdown() {
+  function update() {
+    const now = new Date();
+    const diff = CONFIG.departure - now;
+    if (diff <= 0) {
+      document.getElementById('cd-days').textContent = '🚀';
+      document.getElementById('cd-hours').textContent = "LET'S";
+      document.getElementById('cd-mins').textContent = 'GO';
+      document.getElementById('cd-secs').textContent = '!!!';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-days').textContent = String(d).padStart(2, '0');
+    document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+    document.getElementById('cd-mins').textContent = String(m).padStart(2, '0');
+    document.getElementById('cd-secs').textContent = String(s).padStart(2, '0');
+  }
+  update();
+  setInterval(update, 1000);
+}
+
+// ============================================================
+// PHASE UNLOCKING
+// ============================================================
+function updatePhases() {
+  const now = new Date();
+
+  // Phase 2: Krkonoše hike
+  if (now >= CONFIG.phase2Unlock) {
+    const el = document.getElementById('phase-2');
+    el.classList.remove('locked');
+    document.getElementById('phase-2-name').textContent = '🏔️ Krkonoše Hike';
+    document.getElementById('phase-2-card').innerHTML = `
+      <div class="emoji-icon">⛰️</div>
+      <p>
+        <strong>Krkonoše Mountains!</strong> We're hitting the trails in the Czech Republic's highest mountain range.
+        Fresh air, epic views, maybe some snow up top. ~4 hour hike.
+        This is where we earn the party tonight. 💪
+      </p>
+    `;
+  }
+
+  // Phase 3: Wrocław
+  if (now >= CONFIG.phase3Unlock) {
+    const el = document.getElementById('phase-3');
+    el.classList.remove('locked');
+    document.getElementById('phase-3-name').textContent = '🎉 Wrocław, Poland!';
+    document.getElementById('phase-3-card').innerHTML = `
+      <div class="emoji-icon">🇵🇱</div>
+      <p>
+        <strong>We're crossing the border!</strong> After the hike we cruise straight to <strong>Wrocław</strong> (~2h drive).
+        Check in, freshen up, and get ready. This city knows how to party. 🔥
+      </p>
+    `;
+  }
+
+  // Phase 4: Night out
+  if (now >= CONFIG.phase4Unlock) {
+    const el = document.getElementById('phase-4');
+    el.classList.remove('locked');
+    document.getElementById('phase-4-name').textContent = '🌙 Night Out in Wrocław';
+    document.getElementById('phase-4-card').innerHTML = `
+      <div class="emoji-icon">🍾</div>
+      <p>
+        Bars, clubs, and the best nightlife Wrocław has to offer.
+        Birthday boy gets the first round. 🥂
+        Beautiful city, beautiful people, one legendary night. Let's make it count.
+      </p>
+    `;
+  }
+
+  // Mark active phase
+  const phases = [
+    { el: document.getElementById('phase-1'), start: null, end: CONFIG.phase2Unlock },
+    { el: document.getElementById('phase-2'), start: CONFIG.phase2Unlock, end: CONFIG.phase3Unlock },
+    { el: document.getElementById('phase-3'), start: CONFIG.phase3Unlock, end: CONFIG.phase4Unlock },
+    { el: document.getElementById('phase-4'), start: CONFIG.phase4Unlock, end: CONFIG.galleryUnlock },
+    { el: document.getElementById('phase-5'), start: CONFIG.galleryUnlock, end: null },
+  ];
+  phases.forEach(p => {
+    if (p.start && now < p.start) return;
+    if (p.end && now >= p.end) return;
+    p.el.classList.add('active');
+  });
+
+  // Gallery
+  const galleryContent = document.getElementById('gallery-content');
+  if (now >= CONFIG.galleryUnlock && CONFIG.photos.length > 0) {
+    galleryContent.innerHTML = '<div class="gallery-grid">' +
+      CONFIG.photos.map(src => `
+        <div class="gallery-item" onclick="openLightbox('${src}')">
+          <img src="${src}" alt="Trip photo" loading="lazy">
+        </div>
+      `).join('') + '</div>';
+  } else if (now >= CONFIG.galleryUnlock) {
+    galleryContent.innerHTML = `
+      <div class="gallery-placeholder">
+        <div class="big-emoji">📷</div>
+        <p>Photos coming soon! Check back after the trip.</p>
+      </div>
+    `;
+  } else {
+    galleryContent.innerHTML = `
+      <div class="gallery-placeholder">
+        <div class="big-emoji">🔒</div>
+        <p>This section unlocks after the trip.<br>The best memories are yet to come!</p>
+      </div>
+    `;
+  }
+
+  // Re-check every minute
+  setTimeout(updatePhases, 60000);
+}
+
+// ============================================================
+// LIGHTBOX
+// ============================================================
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+document.getElementById('lightbox').addEventListener('click', () => {
+  document.getElementById('lightbox').classList.remove('open');
+});
+
+// Make openLightbox available globally
+window.openLightbox = openLightbox;
+</script>
+</body>
+</html>
