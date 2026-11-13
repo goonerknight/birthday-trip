@@ -206,6 +206,124 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ===== DATE PICKER ===== */
+#date-screen {
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.date-intro {
+  max-width: 500px;
+  margin-bottom: 2rem;
+}
+
+.date-intro p {
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.date-brief {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem 1.2rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+
+.month-group {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 1.5rem;
+}
+
+.month-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent2);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.date-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.6rem;
+}
+
+.date-btn {
+  padding: 0.9rem 0.5rem;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.date-btn:hover {
+  border-color: var(--accent);
+  background: rgba(108, 92, 231, 0.1);
+  transform: translateY(-2px);
+}
+
+.date-btn.selected {
+  border-color: var(--green);
+  background: rgba(0, 184, 148, 0.15);
+  box-shadow: 0 0 15px rgba(0, 184, 148, 0.2);
+}
+
+.date-btn .day-name {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  display: block;
+  margin-top: 0.2rem;
+}
+
+.confirm-btn {
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, var(--green), #00b894);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.confirm-btn.ready {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.confirm-btn.ready:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 184, 148, 0.4);
+}
+
+/* ===== MAIN CONTENT ===== */
 #main-screen { padding: 0; }
 
 .hero {
@@ -580,6 +698,7 @@ body {
   .countdown-number { font-size: 1.5rem; }
   .phase { padding-left: 2rem; }
   .packing-grid { grid-template-columns: 1fr; }
+  .date-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -592,7 +711,7 @@ body {
   <div class="lock-icon">🔒</div>
   <h1 class="title">Tajná Mise</h1>
   <p class="subtitle">
-    Všechno nejlepší, brácho! 🎂<br>
+    Všechno nejlepší, kámo! 🎂<br>
     Tvůj dárek je zamčený za heslem.<br>
     Splň výzvu a odemkni ho.
   </p>
@@ -615,8 +734,21 @@ body {
 <div id="reveal-screen" class="screen">
   <div>
     <div class="reveal-text">🎉 JEDEŠ NA VÝLET! 🎉</div>
-    <div class="reveal-sub">Sbal si věci, brácho. Tenhle víkend bude legendární.</div>
+    <div class="reveal-sub">Sbal si věci, kámo. Čeká tě legendární víkend.</div>
   </div>
+</div>
+
+<!-- ===== VÝBĚR DATUMU ===== -->
+<div id="date-screen" class="screen">
+  <div class="date-intro">
+    <h1 class="title">Vyber si víkend 📅</h1>
+    <p>Jedeme na sobotu brzo ráno a vracíme se v neděli po obědě. Vyber sobotu, kdy máš čas:</p>
+    <div class="date-brief">
+      🚗 Sobota brzy ráno → Neděle po obědě
+    </div>
+  </div>
+  <div id="date-options"></div>
+  <button class="confirm-btn" id="confirm-date-btn">POTVRDIT TERMÍN ✅</button>
 </div>
 
 <!-- ===== HLAVNÍ OBSAH ===== -->
@@ -627,7 +759,7 @@ body {
     <h1 class="hero-title">
       <span class="gradient">Víkendové<br>Dobrodružství</span>
     </h1>
-    <p class="hero-date">Sobota 14. 11. → Neděle 15. 11. 2026</p>
+    <p class="hero-date" id="hero-date"></p>
     <div class="countdown-row" id="countdown">
       <div class="countdown-unit">
         <div class="countdown-number" id="cd-days">--</div>
@@ -763,14 +895,52 @@ body {
 <script>
 const CONFIG = {
   password: "STŮL",
-  phase2Unlock: new Date("2026-11-14T06:00:00+01:00"),
-  phase3Unlock: new Date("2026-11-14T13:00:00+01:00"),
-  phase4Unlock: new Date("2026-11-14T18:00:00+01:00"),
-  galleryUnlock: new Date("2026-11-15T18:00:00+01:00"),
-  departure: new Date("2026-11-14T07:00:00+01:00"),
   photos: []
 };
 
+const MONTH_NAMES = [
+  'Leden','Únor','Březen','Duben','Květen','Červen',
+  'Červenec','Srpen','Září','Říjen','Listopad','Prosinec'
+];
+
+function normalize(s) {
+  return s.trim().toUpperCase().normalize('NFC');
+}
+
+function formatCzechDate(d) {
+  const day = d.getDate();
+  const month = d.getMonth() + 1;
+  return `${day}. ${month}.`;
+}
+
+function formatCzechDateFull(d) {
+  const day = d.getDate();
+  const month = MONTH_NAMES[d.getMonth()];
+  const year = d.getFullYear();
+  return `${day}. ${month} ${year}`;
+}
+
+function getSunday(satDate) {
+  const sun = new Date(satDate);
+  sun.setDate(sun.getDate() + 1);
+  return sun;
+}
+
+function getSpring2027Saturdays() {
+  const saturdays = [];
+  const start = new Date(2027, 2, 1); // March 1, 2027
+  const end = new Date(2027, 4, 31);  // May 31, 2027
+  const d = new Date(start);
+  while (d <= end) {
+    if (d.getDay() === 6) {
+      saturdays.push(new Date(d));
+    }
+    d.setDate(d.getDate() + 1);
+  }
+  return saturdays;
+}
+
+// ===== PARTICLES =====
 function createParticles() {
   const container = document.getElementById('particles');
   const colors = ['#6c5ce7', '#00cec9', '#fdcb6e', '#ff6b6b', '#55efc4'];
@@ -787,13 +957,10 @@ function createParticles() {
 }
 createParticles();
 
+// ===== PASSWORD =====
 const pwdInput = document.getElementById('pwd-input');
 const submitBtn = document.getElementById('submit-btn');
 const errorMsg = document.getElementById('error-msg');
-
-function normalize(s) {
-  return s.trim().toUpperCase().normalize('NFC');
-}
 
 function checkPassword() {
   if (normalize(pwdInput.value) === normalize(CONFIG.password)) {
@@ -809,28 +976,35 @@ function checkPassword() {
 submitBtn.addEventListener('click', checkPassword);
 pwdInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') checkPassword();
-  errorMsg.textContent = ' ';
+  errorMsg.textContent = ' ';
 });
 
-if (localStorage.getItem('bday-unlocked') === 'true') {
-  document.getElementById('password-screen').classList.remove('active');
-  document.getElementById('main-screen').classList.add('active');
-  startCountdown();
-  updatePhases();
+// ===== CHECK SAVED STATE =====
+const savedDate = localStorage.getItem('bday-trip-date');
+if (savedDate && localStorage.getItem('bday-unlocked') === 'true') {
+  goToMain(new Date(savedDate));
+} else if (localStorage.getItem('bday-unlocked') === 'true') {
+  goToDatePicker();
 }
 
+// ===== REVEAL =====
 function showReveal() {
   document.getElementById('password-screen').classList.remove('active');
   document.getElementById('reveal-screen').classList.add('active');
   launchConfetti();
   setTimeout(() => {
     document.getElementById('reveal-screen').classList.remove('active');
-    document.getElementById('main-screen').classList.add('active');
-    startCountdown();
-    updatePhases();
+    goToDatePicker();
   }, 3500);
 }
 
+function goToDatePicker() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('date-screen').classList.add('active');
+  renderDateOptions();
+}
+
+// ===== CONFETTI =====
 function launchConfetti() {
   const colors = ['#6c5ce7', '#00cec9', '#fdcb6e', '#ff6b6b', '#55efc4', '#e17055', '#fab1a0'];
   for (let i = 0; i < 80; i++) {
@@ -848,10 +1022,91 @@ function launchConfetti() {
   }
 }
 
-function startCountdown() {
+// ===== DATE PICKER =====
+let selectedDate = null;
+
+function renderDateOptions() {
+  const container = document.getElementById('date-options');
+  const saturdays = getSpring2027Saturdays();
+  const grouped = {};
+
+  saturdays.forEach(s => {
+    const key = s.getMonth();
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(s);
+  });
+
+  container.innerHTML = '';
+  Object.keys(grouped).forEach(monthIdx => {
+    const group = document.createElement('div');
+    group.className = 'month-group';
+
+    const label = document.createElement('div');
+    label.className = 'month-label';
+    label.textContent = MONTH_NAMES[monthIdx] + ' 2027';
+    group.appendChild(label);
+
+    const grid = document.createElement('div');
+    grid.className = 'date-grid';
+
+    grouped[monthIdx].forEach(sat => {
+      const btn = document.createElement('button');
+      btn.className = 'date-btn';
+      const sun = getSunday(sat);
+      btn.innerHTML = `So ${formatCzechDate(sat)} – Ne ${formatCzechDate(sun)}<span class="day-name">víkend</span>`;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedDate = sat;
+        document.getElementById('confirm-date-btn').classList.add('ready');
+      });
+      grid.appendChild(btn);
+    });
+
+    group.appendChild(grid);
+    container.appendChild(group);
+  });
+}
+
+document.getElementById('confirm-date-btn').addEventListener('click', () => {
+  if (!selectedDate) return;
+  localStorage.setItem('bday-trip-date', selectedDate.toISOString());
+  goToMain(selectedDate);
+});
+
+// ===== MAIN SCREEN =====
+function goToMain(tripDate) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('main-screen').classList.add('active');
+
+  const sun = getSunday(tripDate);
+  document.getElementById('hero-date').textContent =
+    `Sobota ${formatCzechDateFull(tripDate)} → Neděle ${formatCzechDateFull(sun)}`;
+
+  const departure = new Date(tripDate);
+  departure.setHours(7, 0, 0, 0);
+
+  const phase2Unlock = new Date(tripDate);
+  phase2Unlock.setHours(6, 0, 0, 0);
+
+  const phase3Unlock = new Date(tripDate);
+  phase3Unlock.setHours(13, 0, 0, 0);
+
+  const phase4Unlock = new Date(tripDate);
+  phase4Unlock.setHours(18, 0, 0, 0);
+
+  const galleryUnlock = new Date(sun);
+  galleryUnlock.setHours(18, 0, 0, 0);
+
+  startCountdown(departure);
+  updatePhases(phase2Unlock, phase3Unlock, phase4Unlock, galleryUnlock);
+}
+
+// ===== COUNTDOWN =====
+function startCountdown(departure) {
   function update() {
     const now = new Date();
-    const diff = CONFIG.departure - now;
+    const diff = departure - now;
     if (diff <= 0) {
       document.getElementById('cd-days').textContent = '🚀';
       document.getElementById('cd-hours').textContent = 'JEDEME';
@@ -872,10 +1127,11 @@ function startCountdown() {
   setInterval(update, 1000);
 }
 
-function updatePhases() {
+// ===== PHASE UNLOCKING =====
+function updatePhases(phase2Unlock, phase3Unlock, phase4Unlock, galleryUnlock) {
   const now = new Date();
 
-  if (now >= CONFIG.phase2Unlock) {
+  if (now >= phase2Unlock) {
     document.getElementById('phase-2').classList.remove('locked');
     document.getElementById('phase-2-name').textContent = '🏔️ Túra v Krkonoších';
     document.getElementById('phase-2-card').innerHTML = `
@@ -888,7 +1144,7 @@ function updatePhases() {
     `;
   }
 
-  if (now >= CONFIG.phase3Unlock) {
+  if (now >= phase3Unlock) {
     document.getElementById('phase-3').classList.remove('locked');
     document.getElementById('phase-3-name').textContent = '🎉 Wrocław, Polsko!';
     document.getElementById('phase-3-card').innerHTML = `
@@ -900,7 +1156,7 @@ function updatePhases() {
     `;
   }
 
-  if (now >= CONFIG.phase4Unlock) {
+  if (now >= phase4Unlock) {
     document.getElementById('phase-4').classList.remove('locked');
     document.getElementById('phase-4-name').textContent = '🌙 Noční Wrocław';
     document.getElementById('phase-4-card').innerHTML = `
@@ -914,11 +1170,11 @@ function updatePhases() {
   }
 
   const phases = [
-    { el: document.getElementById('phase-1'), start: null, end: CONFIG.phase2Unlock },
-    { el: document.getElementById('phase-2'), start: CONFIG.phase2Unlock, end: CONFIG.phase3Unlock },
-    { el: document.getElementById('phase-3'), start: CONFIG.phase3Unlock, end: CONFIG.phase4Unlock },
-    { el: document.getElementById('phase-4'), start: CONFIG.phase4Unlock, end: CONFIG.galleryUnlock },
-    { el: document.getElementById('phase-5'), start: CONFIG.galleryUnlock, end: null },
+    { el: document.getElementById('phase-1'), start: null, end: phase2Unlock },
+    { el: document.getElementById('phase-2'), start: phase2Unlock, end: phase3Unlock },
+    { el: document.getElementById('phase-3'), start: phase3Unlock, end: phase4Unlock },
+    { el: document.getElementById('phase-4'), start: phase4Unlock, end: galleryUnlock },
+    { el: document.getElementById('phase-5'), start: galleryUnlock, end: null },
   ];
   phases.forEach(p => {
     if (p.start && now < p.start) return;
@@ -927,14 +1183,14 @@ function updatePhases() {
   });
 
   const galleryContent = document.getElementById('gallery-content');
-  if (now >= CONFIG.galleryUnlock && CONFIG.photos.length > 0) {
+  if (now >= galleryUnlock && CONFIG.photos.length > 0) {
     galleryContent.innerHTML = '<div class="gallery-grid">' +
       CONFIG.photos.map(src => `
         <div class="gallery-item" onclick="openLightbox('${src}')">
           <img src="${src}" alt="Fotka z výletu" loading="lazy">
         </div>
       `).join('') + '</div>';
-  } else if (now >= CONFIG.galleryUnlock) {
+  } else if (now >= galleryUnlock) {
     galleryContent.innerHTML = `
       <div class="gallery-placeholder">
         <div class="big-emoji">📷</div>
@@ -950,9 +1206,10 @@ function updatePhases() {
     `;
   }
 
-  setTimeout(updatePhases, 60000);
+  setTimeout(() => updatePhases(phase2Unlock, phase3Unlock, phase4Unlock, galleryUnlock), 60000);
 }
 
+// ===== LIGHTBOX =====
 function openLightbox(src) {
   document.getElementById('lightbox-img').src = src;
   document.getElementById('lightbox').classList.add('open');
