@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>🎂 Birthday Mission</title>
+<title>🎂 Narozeninová Mise</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -33,7 +33,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ===== PARTICLES ===== */
 #particles {
   position: fixed;
   top: 0; left: 0;
@@ -56,7 +55,6 @@ body {
   100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
 }
 
-/* ===== SCREENS ===== */
 .screen {
   display: none;
   min-height: 100vh;
@@ -65,7 +63,6 @@ body {
 }
 .screen.active { display: flex; flex-direction: column; }
 
-/* ===== PASSWORD SCREEN ===== */
 #password-screen {
   align-items: center;
   justify-content: center;
@@ -122,7 +119,6 @@ body {
   font-size: 1.2rem;
   text-align: center;
   letter-spacing: 0.3em;
-  text-transform: uppercase;
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
@@ -176,7 +172,6 @@ body {
   min-height: 1.5em;
 }
 
-/* ===== REVEAL ANIMATION ===== */
 #reveal-screen {
   align-items: center;
   justify-content: center;
@@ -211,7 +206,6 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== MAIN CONTENT ===== */
 #main-screen { padding: 0; }
 
 .hero {
@@ -291,7 +285,6 @@ body {
   margin-top: 0.25rem;
 }
 
-/* ===== TIMELINE ===== */
 .timeline {
   max-width: 700px;
   margin: 0 auto;
@@ -398,7 +391,6 @@ body {
   font-style: italic;
 }
 
-/* ===== PACKING LIST ===== */
 .packing-section {
   max-width: 700px;
   margin: 0 auto;
@@ -454,7 +446,6 @@ body {
   color: var(--accent);
 }
 
-/* ===== INFO BANNER ===== */
 .info-banner {
   max-width: 700px;
   margin: 2rem auto;
@@ -485,7 +476,6 @@ body {
   line-height: 1.6;
 }
 
-/* ===== PHOTO GALLERY ===== */
 .gallery-section {
   max-width: 700px;
   margin: 0 auto;
@@ -544,7 +534,6 @@ body {
 .gallery-placeholder .big-emoji { font-size: 3rem; margin-bottom: 1rem; }
 .gallery-placeholder p { color: var(--text-dim); font-size: 0.95rem; }
 
-/* ===== LIGHTBOX ===== */
 .lightbox {
   display: none;
   position: fixed;
@@ -567,7 +556,6 @@ body {
   object-fit: contain;
 }
 
-/* ===== FOOTER ===== */
 .footer {
   text-align: center;
   padding: 3rem 2rem;
@@ -575,7 +563,6 @@ body {
   font-size: 0.85rem;
 }
 
-/* ===== CONFETTI ===== */
 .confetti-piece {
   position: fixed;
   z-index: 999;
@@ -588,7 +575,6 @@ body {
   100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 480px) {
   .countdown-unit { min-width: 65px; padding: 0.75rem 1rem; }
   .countdown-number { font-size: 1.5rem; }
@@ -601,221 +587,190 @@ body {
 
 <div id="particles"></div>
 
-<!-- ===== PASSWORD SCREEN ===== -->
+<!-- ===== HESLO ===== -->
 <div id="password-screen" class="screen active">
   <div class="lock-icon">🔒</div>
-  <h1 class="title">Mission Classified</h1>
+  <h1 class="title">Tajná Mise</h1>
   <p class="subtitle">
-    Happy Birthday, legend! 🎂<br>
-    Your gift is locked behind a password.<br>
-    Complete the challenge to unlock it.
+    Všechno nejlepší, brácho! 🎂<br>
+    Tvůj dárek je zamčený za heslem.<br>
+    Splň výzvu a odemkni ho.
   </p>
   <div class="password-box">
     <input
       type="text"
       class="password-input"
       id="pwd-input"
-      placeholder="ENTER CODE"
+      placeholder="ZADEJ HESLO"
       autocomplete="off"
       spellcheck="false"
     >
     <div class="error-msg" id="error-msg">&nbsp;</div>
-    <button class="submit-btn" id="submit-btn">UNLOCK 🔓</button>
+    <button class="submit-btn" id="submit-btn">ODEMKNOUT 🔓</button>
   </div>
-  <p class="hint-text">💡 Hint: Complete the birthday challenge to earn the code!</p>
+  <p class="hint-text">💡 Nápověda: Splň narozeninovou výzvu a dostaneš kód!</p>
 </div>
 
-<!-- ===== REVEAL SCREEN ===== -->
+<!-- ===== ODHALENÍ ===== -->
 <div id="reveal-screen" class="screen">
   <div>
-    <div class="reveal-text">🎉 YOU'RE GOING ON A TRIP! 🎉</div>
-    <div class="reveal-sub">Pack your bags, bro. This weekend is going to be legendary.</div>
+    <div class="reveal-text">🎉 JEDEŠ NA VÝLET! 🎉</div>
+    <div class="reveal-sub">Sbal si věci, brácho. Tenhle víkend bude legendární.</div>
   </div>
 </div>
 
-<!-- ===== MAIN CONTENT ===== -->
+<!-- ===== HLAVNÍ OBSAH ===== -->
 <div id="main-screen" class="screen">
 
-  <!-- HERO -->
   <div class="hero">
-    <div class="hero-badge">🎁 Birthday Mission Briefing</div>
+    <div class="hero-badge">🎁 Narozeninový Briefing</div>
     <h1 class="hero-title">
-      <span class="gradient">Weekend<br>Adventure</span>
+      <span class="gradient">Víkendové<br>Dobrodružství</span>
     </h1>
-    <p class="hero-date">Saturday Nov 14 → Sunday Nov 15, 2026</p>
+    <p class="hero-date">Sobota 14. 11. → Neděle 15. 11. 2026</p>
     <div class="countdown-row" id="countdown">
       <div class="countdown-unit">
         <div class="countdown-number" id="cd-days">--</div>
-        <div class="countdown-label">Days</div>
+        <div class="countdown-label">Dní</div>
       </div>
       <div class="countdown-unit">
         <div class="countdown-number" id="cd-hours">--</div>
-        <div class="countdown-label">Hours</div>
+        <div class="countdown-label">Hodin</div>
       </div>
       <div class="countdown-unit">
         <div class="countdown-number" id="cd-mins">--</div>
-        <div class="countdown-label">Mins</div>
+        <div class="countdown-label">Minut</div>
       </div>
       <div class="countdown-unit">
         <div class="countdown-number" id="cd-secs">--</div>
-        <div class="countdown-label">Secs</div>
+        <div class="countdown-label">Sekund</div>
       </div>
     </div>
   </div>
 
-  <!-- TIMELINE -->
   <div class="timeline">
-    <h2 class="timeline-title">🗺️ The Plan</h2>
+    <h2 class="timeline-title">🗺️ Plán</h2>
 
-    <!-- PHASE 1: Always visible after unlock -->
     <div class="phase" id="phase-1">
       <div class="phase-dot"></div>
-      <div class="phase-time">SAT 07:00</div>
-      <div class="phase-name">🚗 Departure</div>
+      <div class="phase-time">SO 07:00</div>
+      <div class="phase-name">🚗 Odjezd</div>
       <div class="phase-card">
-        <p>Early morning pickup. Coffee in hand, bags in the trunk. We're heading out of Prague. Destination? You'll find out soon enough... 😏</p>
+        <p>Ranní vyzvednutí. Kafe v ruce, tašky v kufru. Vyrážíme z Prahy. Kam? To se dozvíš brzy... 😏</p>
       </div>
     </div>
 
-    <!-- PHASE 2: Unlocks Saturday morning -->
     <div class="phase locked" id="phase-2">
       <div class="phase-dot"></div>
-      <div class="phase-time">SAT 09:00 – 13:00</div>
+      <div class="phase-time">SO 09:00 – 13:00</div>
       <div class="phase-name" id="phase-2-name">🏔️ ???</div>
       <div class="phase-card" id="phase-2-card">
-        <div class="locked-label">🔒 Unlocks Saturday morning</div>
+        <div class="locked-label">🔒 Odemkne se v sobotu ráno</div>
       </div>
     </div>
 
-    <!-- PHASE 3: Unlocks Saturday afternoon -->
     <div class="phase locked" id="phase-3">
       <div class="phase-dot"></div>
-      <div class="phase-time">SAT 15:30</div>
+      <div class="phase-time">SO 15:30</div>
       <div class="phase-name" id="phase-3-name">🎉 ???</div>
       <div class="phase-card" id="phase-3-card">
-        <div class="locked-label">🔒 Unlocks after the hike</div>
+        <div class="locked-label">🔒 Odemkne se po túře</div>
       </div>
     </div>
 
-    <!-- PHASE 4: Unlocks Saturday evening -->
     <div class="phase locked" id="phase-4">
       <div class="phase-dot"></div>
-      <div class="phase-time">SAT EVENING</div>
+      <div class="phase-time">SO VEČER</div>
       <div class="phase-name" id="phase-4-name">🌙 ???</div>
       <div class="phase-card" id="phase-4-card">
-        <div class="locked-label">🔒 Unlocks Saturday evening</div>
+        <div class="locked-label">🔒 Odemkne se v sobotu večer</div>
       </div>
     </div>
 
-    <!-- PHASE 5: Sunday return -->
     <div class="phase" id="phase-5">
       <div class="phase-dot"></div>
-      <div class="phase-time">SUN ~13:00</div>
-      <div class="phase-name">🏠 Heading Home</div>
+      <div class="phase-time">NE ~13:00</div>
+      <div class="phase-name">🏠 Návrat domů</div>
       <div class="phase-card">
-        <p>Chill morning, grab brunch, then cruise back to Prague (~3.5h drive). ETA home around 17:00. What a weekend. 🙌</p>
+        <p>Pohodové ráno, brunch, a pak zpátky do Prahy (~3,5h cesta). Doma kolem 17:00. Co víkend. 🙌</p>
       </div>
     </div>
   </div>
 
-  <!-- PACKING LIST -->
   <div class="packing-section">
-    <h2 class="packing-title">🎒 What to Pack</h2>
+    <h2 class="packing-title">🎒 Co s sebou</h2>
     <div class="packing-grid">
       <div class="packing-card">
-        <h3>🥾 Day Activity</h3>
+        <h3>🥾 Denní program</h3>
         <ul>
-          <li>Hiking boots or solid trail shoes</li>
-          <li>Comfortable layers (it'll be cold up there)</li>
-          <li>Waterproof jacket</li>
-          <li>Water bottle & snacks</li>
-          <li>Sunglasses</li>
+          <li>Pohorky nebo pevné boty na túru</li>
+          <li>Pohodlné vrstvy (nahoře bude zima)</li>
+          <li>Nepromokavá bunda</li>
+          <li>Lahev na vodu a svačina</li>
+          <li>Sluneční brýle</li>
         </ul>
       </div>
       <div class="packing-card">
-        <h3>🎉 Night Activity</h3>
+        <h3>🎉 Noční program</h3>
         <ul>
-          <li>Your best going-out fit</li>
-          <li>Fresh kicks</li>
-          <li>Cologne (you know why 😏)</li>
-          <li>ID / passport (!)</li>
-          <li>Good vibes only</li>
+          <li>Tvůj nejlepší outfit na ven</li>
+          <li>Čistý boty</li>
+          <li>Parfém (víš proč 😏)</li>
+          <li>Občanka / pas (!)</li>
+          <li>Dobrá nálada</li>
         </ul>
       </div>
       <div class="packing-card">
-        <h3>🧳 Essentials</h3>
+        <h3>🧳 Základ</h3>
         <ul>
-          <li>Phone charger / power bank</li>
-          <li>Cash + card</li>
-          <li>Toothbrush & basics</li>
-          <li>Change of clothes for Sunday</li>
-          <li>Sunscreen (mountains are intense)</li>
+          <li>Nabíječka / powerbanka</li>
+          <li>Hotovost + karta</li>
+          <li>Kartáček a základní hygiena</li>
+          <li>Oblečení na neděli</li>
+          <li>Opalovací krém (na horách je to jiný)</li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- INFO BANNER -->
   <div class="info-banner">
     <div class="info-card">
       <div class="big-emoji">⚡</div>
-      <h3>Heads Up</h3>
+      <h3>Důležité info</h3>
       <p>
-        Be ready Saturday at <strong>7:00 AM</strong>. Don't be late, don't be hungover (too much 😅).
-        We cross borders, so <strong>bring your ID/passport</strong>.
-        Everything else is taken care of. Trust the process. 🤝
+        Buď ready v sobotu v <strong>7:00 ráno</strong>. Nepřijď pozdě a nebud moc zkacovanej 😅.
+        Jedeme přes hranice, takže <strong>vezmi si občanku/pas</strong>.
+        O zbytek je postaráno. Věř procesu. 🤝
       </p>
     </div>
   </div>
 
-  <!-- PHOTO GALLERY (unlocks after trip) -->
   <div class="gallery-section" id="gallery-section">
-    <h2 class="gallery-title">📸 Trip Memories</h2>
-    <p class="gallery-sub" id="gallery-sub">Photos from our epic weekend</p>
-    <div id="gallery-content">
-      <!-- Gallery placeholder or actual photos will be inserted here -->
-    </div>
+    <h2 class="gallery-title">📸 Vzpomínky z výletu</h2>
+    <p class="gallery-sub" id="gallery-sub">Fotky z našeho epického víkendu</p>
+    <div id="gallery-content"></div>
   </div>
 
   <div class="footer">
-    Made with ❤️ for the birthday legend
+    Made with ❤️ pro narozeninovou legendu
   </div>
 </div>
 
-<!-- ===== LIGHTBOX ===== -->
 <div class="lightbox" id="lightbox">
-  <img id="lightbox-img" src="" alt="Photo">
+  <img id="lightbox-img" src="" alt="Fotka">
 </div>
 
 <script>
-// ============================================================
-// CONFIG — EDIT THESE VALUES
-// ============================================================
 const CONFIG = {
-  // The password your friend needs to enter (case-insensitive)
-  password: "LEGENDS",
-
-  // Phase unlock times (CET / Europe/Prague timezone)
-  // Phase 2: Hike reveal
+  password: "STŮL",
   phase2Unlock: new Date("2026-11-14T06:00:00+01:00"),
-  // Phase 3: Party city reveal
   phase3Unlock: new Date("2026-11-14T13:00:00+01:00"),
-  // Phase 4: Night plans reveal
   phase4Unlock: new Date("2026-11-14T18:00:00+01:00"),
-  // Gallery: After the trip
   galleryUnlock: new Date("2026-11-15T18:00:00+01:00"),
-
-  // Departure countdown target
   departure: new Date("2026-11-14T07:00:00+01:00"),
-
-  // Photos — add URLs here after the trip!
-  // Example: photos: ["photo1.jpg", "photo2.jpg", "https://..."]
   photos: []
 };
 
-// ============================================================
-// PARTICLES
-// ============================================================
 function createParticles() {
   const container = document.getElementById('particles');
   const colors = ['#6c5ce7', '#00cec9', '#fdcb6e', '#ff6b6b', '#55efc4'];
@@ -832,21 +787,21 @@ function createParticles() {
 }
 createParticles();
 
-// ============================================================
-// PASSWORD LOGIC
-// ============================================================
 const pwdInput = document.getElementById('pwd-input');
 const submitBtn = document.getElementById('submit-btn');
 const errorMsg = document.getElementById('error-msg');
 
+function normalize(s) {
+  return s.trim().toUpperCase().normalize('NFC');
+}
+
 function checkPassword() {
-  const val = pwdInput.value.trim().toUpperCase();
-  if (val === CONFIG.password.toUpperCase()) {
+  if (normalize(pwdInput.value) === normalize(CONFIG.password)) {
     localStorage.setItem('bday-unlocked', 'true');
     showReveal();
   } else {
     pwdInput.classList.add('shake');
-    errorMsg.textContent = 'Wrong code. Try again! 🤔';
+    errorMsg.textContent = 'Špatný kód. Zkus to znovu! 🤔';
     setTimeout(() => pwdInput.classList.remove('shake'), 500);
   }
 }
@@ -857,7 +812,6 @@ pwdInput.addEventListener('keydown', (e) => {
   errorMsg.textContent = ' ';
 });
 
-// Check if already unlocked
 if (localStorage.getItem('bday-unlocked') === 'true') {
   document.getElementById('password-screen').classList.remove('active');
   document.getElementById('main-screen').classList.add('active');
@@ -865,14 +819,10 @@ if (localStorage.getItem('bday-unlocked') === 'true') {
   updatePhases();
 }
 
-// ============================================================
-// REVEAL ANIMATION
-// ============================================================
 function showReveal() {
   document.getElementById('password-screen').classList.remove('active');
   document.getElementById('reveal-screen').classList.add('active');
   launchConfetti();
-
   setTimeout(() => {
     document.getElementById('reveal-screen').classList.remove('active');
     document.getElementById('main-screen').classList.add('active');
@@ -881,9 +831,6 @@ function showReveal() {
   }, 3500);
 }
 
-// ============================================================
-// CONFETTI
-// ============================================================
 function launchConfetti() {
   const colors = ['#6c5ce7', '#00cec9', '#fdcb6e', '#ff6b6b', '#55efc4', '#e17055', '#fab1a0'];
   for (let i = 0; i < 80; i++) {
@@ -901,18 +848,15 @@ function launchConfetti() {
   }
 }
 
-// ============================================================
-// COUNTDOWN
-// ============================================================
 function startCountdown() {
   function update() {
     const now = new Date();
     const diff = CONFIG.departure - now;
     if (diff <= 0) {
       document.getElementById('cd-days').textContent = '🚀';
-      document.getElementById('cd-hours').textContent = "LET'S";
-      document.getElementById('cd-mins').textContent = 'GO';
-      document.getElementById('cd-secs').textContent = '!!!';
+      document.getElementById('cd-hours').textContent = 'JEDEME';
+      document.getElementById('cd-mins').textContent = 'NA';
+      document.getElementById('cd-secs').textContent = 'TO!';
       return;
     }
     const d = Math.floor(diff / 86400000);
@@ -928,57 +872,47 @@ function startCountdown() {
   setInterval(update, 1000);
 }
 
-// ============================================================
-// PHASE UNLOCKING
-// ============================================================
 function updatePhases() {
   const now = new Date();
 
-  // Phase 2: Krkonoše hike
   if (now >= CONFIG.phase2Unlock) {
-    const el = document.getElementById('phase-2');
-    el.classList.remove('locked');
-    document.getElementById('phase-2-name').textContent = '🏔️ Krkonoše Hike';
+    document.getElementById('phase-2').classList.remove('locked');
+    document.getElementById('phase-2-name').textContent = '🏔️ Túra v Krkonoších';
     document.getElementById('phase-2-card').innerHTML = `
       <div class="emoji-icon">⛰️</div>
       <p>
-        <strong>Krkonoše Mountains!</strong> We're hitting the trails in the Czech Republic's highest mountain range.
-        Fresh air, epic views, maybe some snow up top. ~4 hour hike.
-        This is where we earn the party tonight. 💪
+        <strong>Krkonoše!</strong> Jdeme na hory — nejvyšší pohoří v Česku.
+        Čerstvej vzduch, epický výhledy, možná i sníh nahoře. Cca 4 hodiny túra.
+        Tady si tu večerní párty zasloužíme. 💪
       </p>
     `;
   }
 
-  // Phase 3: Wrocław
   if (now >= CONFIG.phase3Unlock) {
-    const el = document.getElementById('phase-3');
-    el.classList.remove('locked');
-    document.getElementById('phase-3-name').textContent = '🎉 Wrocław, Poland!';
+    document.getElementById('phase-3').classList.remove('locked');
+    document.getElementById('phase-3-name').textContent = '🎉 Wrocław, Polsko!';
     document.getElementById('phase-3-card').innerHTML = `
       <div class="emoji-icon">🇵🇱</div>
       <p>
-        <strong>We're crossing the border!</strong> After the hike we cruise straight to <strong>Wrocław</strong> (~2h drive).
-        Check in, freshen up, and get ready. This city knows how to party. 🔥
+        <strong>Jedeme přes hranice!</strong> Po túře frčíme rovnou do <strong>Wrocławi</strong> (~2h cesta).
+        Check-in, osvěžit se a připravit. Tohle město umí pařit. 🔥
       </p>
     `;
   }
 
-  // Phase 4: Night out
   if (now >= CONFIG.phase4Unlock) {
-    const el = document.getElementById('phase-4');
-    el.classList.remove('locked');
-    document.getElementById('phase-4-name').textContent = '🌙 Night Out in Wrocław';
+    document.getElementById('phase-4').classList.remove('locked');
+    document.getElementById('phase-4-name').textContent = '🌙 Noční Wrocław';
     document.getElementById('phase-4-card').innerHTML = `
       <div class="emoji-icon">🍾</div>
       <p>
-        Bars, clubs, and the best nightlife Wrocław has to offer.
-        Birthday boy gets the first round. 🥂
-        Beautiful city, beautiful people, one legendary night. Let's make it count.
+        Bary, kluby a nejlepší noční život co Wrocław nabízí.
+        Oslavenec platí první rundu. 🥂
+        Krásný město, krásný lidi, jedna legendární noc. Jedeme na to.
       </p>
     `;
   }
 
-  // Mark active phase
   const phases = [
     { el: document.getElementById('phase-1'), start: null, end: CONFIG.phase2Unlock },
     { el: document.getElementById('phase-2'), start: CONFIG.phase2Unlock, end: CONFIG.phase3Unlock },
@@ -992,38 +926,33 @@ function updatePhases() {
     p.el.classList.add('active');
   });
 
-  // Gallery
   const galleryContent = document.getElementById('gallery-content');
   if (now >= CONFIG.galleryUnlock && CONFIG.photos.length > 0) {
     galleryContent.innerHTML = '<div class="gallery-grid">' +
       CONFIG.photos.map(src => `
         <div class="gallery-item" onclick="openLightbox('${src}')">
-          <img src="${src}" alt="Trip photo" loading="lazy">
+          <img src="${src}" alt="Fotka z výletu" loading="lazy">
         </div>
       `).join('') + '</div>';
   } else if (now >= CONFIG.galleryUnlock) {
     galleryContent.innerHTML = `
       <div class="gallery-placeholder">
         <div class="big-emoji">📷</div>
-        <p>Photos coming soon! Check back after the trip.</p>
+        <p>Fotky brzy! Koukni sem po výletu.</p>
       </div>
     `;
   } else {
     galleryContent.innerHTML = `
       <div class="gallery-placeholder">
         <div class="big-emoji">🔒</div>
-        <p>This section unlocks after the trip.<br>The best memories are yet to come!</p>
+        <p>Tahle sekce se odemkne po výletu.<br>Nejlepší vzpomínky teprve přijdou!</p>
       </div>
     `;
   }
 
-  // Re-check every minute
   setTimeout(updatePhases, 60000);
 }
 
-// ============================================================
-// LIGHTBOX
-// ============================================================
 function openLightbox(src) {
   document.getElementById('lightbox-img').src = src;
   document.getElementById('lightbox').classList.add('open');
@@ -1033,7 +962,6 @@ document.getElementById('lightbox').addEventListener('click', () => {
   document.getElementById('lightbox').classList.remove('open');
 });
 
-// Make openLightbox available globally
 window.openLightbox = openLightbox;
 </script>
 </body>
