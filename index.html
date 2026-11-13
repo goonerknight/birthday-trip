@@ -741,8 +741,8 @@ body {
 <!-- ===== VÝBĚR DATUMU ===== -->
 <div id="date-screen" class="screen">
   <div class="date-intro">
-    <h1 class="title">Vyber si víkend 📅</h1>
-    <p>Jedeme na sobotu brzo ráno a vracíme se v neděli po obědě. Vyber sobotu, kdy máš čas:</p>
+    <h1 class="title">Vyber si termín, kámo 📅</h1>
+    <p>Jedeme na sobotu brzo ráno a vracíme se v neděli po obědě. Vyber víkend, kdy máš čas:</p>
     <div class="date-brief">
       🚗 Sobota brzy ráno → Neděle po obědě
     </div>
@@ -893,6 +893,13 @@ body {
 </div>
 
 <script>
+// Reset: add ?reset to URL to start fresh
+if (window.location.search.includes('reset')) {
+  localStorage.removeItem('bday-unlocked');
+  localStorage.removeItem('bday-trip-date');
+  window.location.href = window.location.pathname;
+}
+
 const CONFIG = {
   password: "STŮL",
   photos: []
@@ -1220,13 +1227,6 @@ document.getElementById('lightbox').addEventListener('click', () => {
 });
 
 window.openLightbox = openLightbox;
-
-// Secret reset: add ?reset to the URL to clear saved state
-if (window.location.search.includes('reset')) {
-  localStorage.removeItem('bday-unlocked');
-  localStorage.removeItem('bday-trip-date');
-  window.location.href = window.location.pathname;
-}
 </script>
 </body>
 </html>
