@@ -893,7 +893,20 @@ if (window.location.search.includes('reset')) {
 
 const CONFIG = {
   password: "STŮL",
-  photos: []
+  photoAlbumUrl: "",
+  phase2: {
+    name: "🏔️ Túra v Krkonoších",
+    icon: "⛰️",
+    html: `<strong>Krkonoše, kámo!</strong> Jdeme na hory — nejvyšší pohoří v Česku.
+           Čerstvej vzduch, epický výhledy. Tady si tu večerní párty zasloužíme. 💪`,
+  },
+  phase3: {
+    name: "🎉 Wrocław, Polsko!",
+    icon: "🇵🇱",
+    html: `<strong>Jedeme přes hranice!</strong> Po túře frčíme do <strong>Wrocławi</strong>.
+           Osvěžit se, připravit a vyrazit. Tohle město umí pařit. 🔥
+           Krásný město, krásný lidi, jedna legendární noc. 🍾`,
+  },
 };
 
 const MONTH_NAMES = [
@@ -1133,26 +1146,19 @@ function updatePhases(phase2Unlock, phase3Unlock, galleryUnlock) {
 
   if (now >= phase2Unlock) {
     document.getElementById('phase-2').classList.remove('locked');
-    document.getElementById('phase-2-name').textContent = '🏔️ Túra v Krkonoších';
+    document.getElementById('phase-2-name').textContent = CONFIG.phase2.name;
     document.getElementById('phase-2-card').innerHTML = `
-      <div class="emoji-icon">⛰️</div>
-      <p>
-        <strong>Krkonoše, kámo!</strong> Jdeme na hory — nejvyšší pohoří v Česku.
-        Čerstvej vzduch, epický výhledy. Tady si tu večerní párty zasloužíme. 💪
-      </p>
+      <div class="emoji-icon">${CONFIG.phase2.icon}</div>
+      <p>${CONFIG.phase2.html}</p>
     `;
   }
 
   if (now >= phase3Unlock) {
     document.getElementById('phase-3').classList.remove('locked');
-    document.getElementById('phase-3-name').textContent = '🎉 Wrocław, Polsko!';
+    document.getElementById('phase-3-name').textContent = CONFIG.phase3.name;
     document.getElementById('phase-3-card').innerHTML = `
-      <div class="emoji-icon">🇵🇱</div>
-      <p>
-        <strong>Jedeme přes hranice!</strong> Po túře frčíme do <strong>Wrocławi</strong>.
-        Osvěžit se, připravit a vyrazit. Tohle město umí pařit. 🔥
-        Krásný město, krásný lidi, jedna legendární noc. 🍾
-      </p>
+      <div class="emoji-icon">${CONFIG.phase3.icon}</div>
+      <p>${CONFIG.phase3.html}</p>
     `;
   }
 
@@ -1169,13 +1175,17 @@ function updatePhases(phase2Unlock, phase3Unlock, galleryUnlock) {
   });
 
   const galleryContent = document.getElementById('gallery-content');
-  if (now >= galleryUnlock && CONFIG.photos.length > 0) {
-    galleryContent.innerHTML = '<div class="gallery-grid">' +
-      CONFIG.photos.map(src => `
-        <div class="gallery-item" onclick="openLightbox('${src}')">
-          <img src="${src}" alt="Fotka z výletu" loading="lazy">
-        </div>
-      `).join('') + '</div>';
+  if (now >= galleryUnlock && CONFIG.photoAlbumUrl) {
+    galleryContent.innerHTML = `
+      <div style="text-align: center;">
+        <a href="${CONFIG.photoAlbumUrl}" target="_blank" rel="noopener"
+           style="display: inline-block; padding: 1rem 2rem; background: linear-gradient(135deg, var(--accent), #8b5cf6);
+                  border-radius: 12px; color: white; text-decoration: none; font-weight: 600; font-size: 1.1rem;
+                  transition: transform 0.2s, box-shadow 0.2s;">
+          📸 Otevřít fotky z výletu
+        </a>
+      </div>
+    `;
   } else if (now >= galleryUnlock) {
     galleryContent.innerHTML = `
       <div class="gallery-placeholder">
