@@ -1070,6 +1070,11 @@ document.getElementById('confirm-date-btn').addEventListener('click', () => {
   if (!selectedDate) return;
   localStorage.setItem('bday-trip-date', selectedDate.toISOString());
   goToMain(selectedDate);
+  fetch('/api/notify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: selectedDate.toISOString() }),
+  }).catch(() => {});
 });
 
 // ===== MAIN SCREEN =====
