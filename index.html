@@ -738,7 +738,7 @@ body {
 <!-- ===== ODHALENÍ ===== -->
 <div id="reveal-screen" class="screen">
   <div>
-    <div class="reveal-text">🎉 JEDEŠ NA VÝLET! 🎉</div>
+    <div class="reveal-text">🎉 JEDEŠ NA TRIP! 🎉</div>
     <div class="reveal-sub">Sbal si věci, kámo. Čeká tě legendární víkend.</div>
   </div>
 </div>
@@ -872,7 +872,7 @@ body {
   </div>
 
   <div class="gallery-section" id="gallery-section">
-    <h2 class="gallery-title">📸 Vzpomínky z výletu</h2>
+    <h2 class="gallery-title">📸 Vzpomínky z tripu</h2>
     <p class="gallery-sub" id="gallery-sub">Fotky z našeho epického víkendu</p>
     <div id="gallery-content"></div>
   </div>
@@ -1182,7 +1182,7 @@ function updatePhases(phase2Unlock, phase3Unlock, galleryUnlock) {
            style="display: inline-block; padding: 1rem 2rem; background: linear-gradient(135deg, var(--accent), #8b5cf6);
                   border-radius: 12px; color: white; text-decoration: none; font-weight: 600; font-size: 1.1rem;
                   transition: transform 0.2s, box-shadow 0.2s;">
-          📸 Otevřít fotky z výletu
+          📸 Otevřít fotky z tripu
         </a>
       </div>
     `;
@@ -1190,14 +1190,14 @@ function updatePhases(phase2Unlock, phase3Unlock, galleryUnlock) {
     galleryContent.innerHTML = `
       <div class="gallery-placeholder">
         <div class="big-emoji">📷</div>
-        <p>Fotky brzy! Koukni sem po výletu.</p>
+        <p>Fotky brzy! Koukni sem po tripu.</p>
       </div>
     `;
   } else {
     galleryContent.innerHTML = `
       <div class="gallery-placeholder">
         <div class="big-emoji">🔒</div>
-        <p>Tahle sekce se odemkne po výletu.<br>Nejlepší vzpomínky teprve přijdou!</p>
+        <p>Tahle sekce se odemkne po tripu.<br>Nejlepší vzpomínky teprve přijdou!</p>
       </div>
     `;
   }
